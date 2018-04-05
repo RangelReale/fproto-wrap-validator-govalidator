@@ -71,6 +71,9 @@ func (t *Validator_Govalidator) generateValidation_scalar_string(g *fproto_gowra
 	errors_alias := g.DeclDep("errors", "errors")
 	govalidator_alias := g.DeclDep("github.com/asaskevich/govalidator", "gv")
 
+	g.P("if ", varSrc, ` != "" {`)
+	g.In()
+
 	for _, agn := range option.AggregatedSorted() {
 		agv := option.AggregatedValues[agn]
 
@@ -258,6 +261,9 @@ func (t *Validator_Govalidator) generateValidation_scalar_string(g *fproto_gowra
 			return fmt.Errorf("Validation %s not supported for type %s", agn, tp.FullOriginalName())
 		}
 	}
+
+	g.Out()
+	g.P("}")
 
 	return nil
 }

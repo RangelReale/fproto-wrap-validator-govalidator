@@ -82,8 +82,10 @@ func (t *Validator_Govalidator) generateValidation_scalar_string(g *fproto_gowra
 	for _, agn := range option.AggregatedSorted() {
 		agv := option.AggregatedValues[agn]
 
+		check_value := "true"
 		check_str := "is not"
 		if agv.Source == "false" {
+			check_value = "false"
 			check_str = "is"
 		}
 
@@ -92,140 +94,170 @@ func (t *Validator_Govalidator) generateValidation_scalar_string(g *fproto_gowra
 		check_func := ""
 		check_desc := ""
 
-		if agn == "is_ascii" {
-			check_func = "IsAscii"
+		if agn == "ascii" {
+			check_func = "IsASCII"
 			check_desc = "ASCII"
-		} else if agn == "is_alpha" {
+		} else if agn == "alpha" {
 			check_func = "IsAlpha"
 			check_desc = "alpha"
-		} else if agn == "is_alphanumeric" {
-			supported = true
-			g.P("if ", govalidator_alias, ".IsAlphanumeric(", varSrc, ") != ", agv.Source, " {")
-			g.In()
-			error_msg := fmt.Sprintf(`%s.New("Value %s alphanumeric")`, errors_alias, check_str)
-			vh.GenerateValidationErrorAdd(g.G(), error_msg, agn, fproto_gowrap_validator.VEID_INVALID_VALUE, "govalidator", agn, "govalidator_check", agv.Source)
-			g.Out()
-			g.P("}")
-		} else if agn == "is_base64" {
-			supported = true
-			g.P("if ", govalidator_alias, ".IsBase64(", varSrc, ") != ", agv.Source, " {")
-			g.In()
-			error_msg := fmt.Sprintf(`%s.New("Value %s base64")`, errors_alias, check_str)
-			vh.GenerateValidationErrorAdd(g.G(), error_msg, agn, fproto_gowrap_validator.VEID_INVALID_VALUE, "govalidator", agn, "govalidator_check", agv.Source)
-			g.Out()
-			g.P("}")
-		} else if agn == "is_cidr" {
-			supported = true
-			g.P("if ", govalidator_alias, ".IsCIDR(", varSrc, ") != ", agv.Source, " {")
-			g.In()
-			error_msg := fmt.Sprintf(`%s.New("Value %s CIDR")`, errors_alias, check_str)
-			vh.GenerateValidationErrorAdd(g.G(), error_msg, agn, fproto_gowrap_validator.VEID_INVALID_VALUE, "govalidator", agn, "govalidator_check", agv.Source)
-			g.Out()
-			g.P("}")
-		} else if agn == "is_creditcard" {
-			supported = true
-			g.P("if ", govalidator_alias, ".IsCreditCard(", varSrc, ") != ", agv.Source, " {")
-			g.In()
-			error_msg := fmt.Sprintf(`%s.New("Value %s credit card")`, errors_alias, check_str)
-			vh.GenerateValidationErrorAdd(g.G(), error_msg, agn, fproto_gowrap_validator.VEID_INVALID_VALUE, "govalidator", agn, "govalidator_check", agv.Source)
-			g.Out()
-			g.P("}")
-		} else if agn == "is_dnsname" {
-			supported = true
-			g.P("if ", govalidator_alias, ".IsDNSName(", varSrc, ") != ", agv.Source, " {")
-			g.In()
-			error_msg := fmt.Sprintf(`%s.New("Value %s DNS name")`, errors_alias, check_str)
-			vh.GenerateValidationErrorAdd(g.G(), error_msg, agn, fproto_gowrap_validator.VEID_INVALID_VALUE, "govalidator", agn, "govalidator_check", agv.Source)
-			g.Out()
-			g.P("}")
-		} else if agn == "is_datauri" {
-			supported = true
-			g.P("if ", govalidator_alias, ".IsDataURI(", varSrc, ") != ", agv.Source, " {")
-			g.In()
-			error_msg := fmt.Sprintf(`%s.New("Value %s data URI")`, errors_alias, check_str)
-			vh.GenerateValidationErrorAdd(g.G(), error_msg, agn, fproto_gowrap_validator.VEID_INVALID_VALUE, "govalidator", agn, "govalidator_check", agv.Source)
-			g.Out()
-			g.P("}")
-		} else if agn == "is_dialstring" {
-			supported = true
-			g.P("if ", govalidator_alias, ".IsDialString(", varSrc, ") != ", agv.Source, " {")
-			g.In()
-			error_msg := fmt.Sprintf(`%s.New("Value %s dial string")`, errors_alias, check_str)
-			vh.GenerateValidationErrorAdd(g.G(), error_msg, agn, fproto_gowrap_validator.VEID_INVALID_VALUE, "govalidator", agn, "govalidator_check", agv.Source)
-			g.Out()
-			g.P("}")
-		} else if agn == "is_email" {
-			supported = true
-			g.P("if ", govalidator_alias, ".IsEmail(", varSrc, ") != ", agv.Source, " {")
-			g.In()
-			error_msg := fmt.Sprintf(`%s.New("Value %s email")`, errors_alias, check_str)
-			vh.GenerateValidationErrorAdd(g.G(), error_msg, agn, fproto_gowrap_validator.VEID_INVALID_VALUE, "govalidator", agn, "govalidator_check", agv.Source)
-			g.Out()
-			g.P("}")
-		} else if agn == "is_hexadecimal" {
-			supported = true
-			g.P("if ", govalidator_alias, ".IsHexadecimal(", varSrc, ") != ", agv.Source, " {")
-			g.In()
-			error_msg := fmt.Sprintf(`%s.New("Value %s hexadecimal")`, errors_alias, check_str)
-			vh.GenerateValidationErrorAdd(g.G(), error_msg, agn, fproto_gowrap_validator.VEID_INVALID_VALUE, "govalidator", agn, "govalidator_check", agv.Source)
-			g.Out()
-			g.P("}")
-		} else if agn == "is_hexcolor" {
-			supported = true
-			g.P("if ", govalidator_alias, ".IsHexcolor(", varSrc, ") != ", agv.Source, " {")
-			g.In()
-			error_msg := fmt.Sprintf(`%s.New("Value %s hex color")`, errors_alias, check_str)
-			vh.GenerateValidationErrorAdd(g.G(), error_msg, agn, fproto_gowrap_validator.VEID_INVALID_VALUE, "govalidator", agn, "govalidator_check", agv.Source)
-			g.Out()
-			g.P("}")
-		} else if agn == "is_host" {
-			supported = true
-			g.P("if ", govalidator_alias, ".IsHost(", varSrc, ") != ", agv.Source, " {")
-			g.In()
-			error_msg := fmt.Sprintf(`%s.New("Value %s host")`, errors_alias, check_str)
-			vh.GenerateValidationErrorAdd(g.G(), error_msg, agn, fproto_gowrap_validator.VEID_INVALID_VALUE, "govalidator", agn, "govalidator_check", agv.Source)
-			g.Out()
-			g.P("}")
-		} else if agn == "is_ip" {
-			supported = true
-			g.P("if ", govalidator_alias, ".IsIP(", varSrc, ") != ", agv.Source, " {")
-			g.In()
-			error_msg := fmt.Sprintf(`%s.New("Value %s ip")`, errors_alias, check_str)
-			vh.GenerateValidationErrorAdd(g.G(), error_msg, agn, fproto_gowrap_validator.VEID_INVALID_VALUE, "govalidator", agn, "govalidator_check", agv.Source)
-			g.Out()
-			g.P("}")
-		} else if agn == "is_ipv4" {
-			supported = true
-			g.P("if ", govalidator_alias, ".IsIPv4(", varSrc, ") != ", agv.Source, " {")
-			g.In()
-			error_msg := fmt.Sprintf(`%s.New("Value %s ipv4")`, errors_alias, check_str)
-			vh.GenerateValidationErrorAdd(g.G(), error_msg, agn, fproto_gowrap_validator.VEID_INVALID_VALUE, "govalidator", agn, "govalidator_check", agv.Source)
-			g.Out()
-			g.P("}")
-		} else if agn == "is_ipv6" {
-			supported = true
-			g.P("if ", govalidator_alias, ".IsIPv6(", varSrc, ") != ", agv.Source, " {")
-			g.In()
-			error_msg := fmt.Sprintf(`%s.New("Value %s ipv6")`, errors_alias, check_str)
-			vh.GenerateValidationErrorAdd(g.G(), error_msg, agn, fproto_gowrap_validator.VEID_INVALID_VALUE, "govalidator", agn, "govalidator_check", agv.Source)
-			g.Out()
-			g.P("}")
-		} else if agn == "is_isbn10" {
-			supported = true
-			g.P("if ", govalidator_alias, ".IsISBN10(", varSrc, ") != ", agv.Source, " {")
-			g.In()
-			error_msg := fmt.Sprintf(`%s.New("Value %s ISBN10")`, errors_alias, check_str)
-			vh.GenerateValidationErrorAdd(g.G(), error_msg, agn, fproto_gowrap_validator.VEID_INVALID_VALUE, "govalidator", agn, "govalidator_check", agv.Source)
-			g.Out()
-			g.P("}")
+		} else if agn == "alphanumeric" {
+			check_func = "IsAlphanumeric"
+			check_desc = "alphanumeric"
+		} else if agn == "base64" {
+			check_func = "IsBase64"
+			check_desc = "base64"
+		} else if agn == "cidr" {
+			check_func = "IsCIDR"
+			check_desc = "CIDR"
+		} else if agn == "creditcard" {
+			check_func = "IsCreditCard"
+			check_desc = "credit card"
+		} else if agn == "dnsname" {
+			check_func = "IsDNSName"
+			check_desc = "DNS name"
+		} else if agn == "datauri" {
+			check_func = "IsDataURI"
+			check_desc = "data URI"
+		} else if agn == "dialstring" {
+			check_func = "IsDialString"
+			check_desc = "dial string"
+		} else if agn == "email" {
+			check_func = "IsEmail"
+			check_desc = "email"
+		} else if agn == "hexadecimal" {
+			check_func = "IsHexadecimal"
+			check_desc = "hexadecimal"
+		} else if agn == "hexcolor" {
+			check_func = "IsHexcolor"
+			check_desc = "hex color"
+		} else if agn == "host" {
+			check_func = "IsHost"
+			check_desc = "host"
+		} else if agn == "ip" {
+			check_func = "IsIP"
+			check_desc = "ip"
+		} else if agn == "ipv4" {
+			check_func = "IsIPv4"
+			check_desc = "ipv4"
+		} else if agn == "ipv6" {
+			check_func = "IsIPv6"
+			check_desc = "ipv6"
+		} else if agn == "isbn10" {
+			check_func = "IsISBN10"
+			check_desc = "ISBN10"
+		} else if agn == "isbn13" {
+			check_func = "IsISBN13"
+			check_desc = "ISBN13"
+		} else if agn == "iso3166alpha2" {
+			check_func = "IsISO3166Alpha2"
+			check_desc = "ISO3166Alpha2"
+		} else if agn == "iso3166alpha3" {
+			check_func = "IsISO3166Alpha3"
+			check_desc = "ISO3166Alpha3"
+		} else if agn == "iso693alpha2" {
+			check_func = "IsISO693Alpha2"
+			check_desc = "ISO693Alpha2"
+		} else if agn == "iso693alpha3b" {
+			check_func = "IsISO693Alpha3b"
+			check_desc = "ISO693Alpha3b"
+		} else if agn == "iso4217" {
+			check_func = "IsISO4217"
+			check_desc = "ISO4217"
+		} else if agn == "json" {
+			check_func = "IsJSON"
+			check_desc = "JSON"
+		} else if agn == "latitude" {
+			check_func = "IsLatitude"
+			check_desc = "latitude"
+		} else if agn == "longitude" {
+			check_func = "IsLongitude"
+			check_desc = "longitude"
+		} else if agn == "lowercase" {
+			check_func = "IsLowerCase"
+			check_desc = "lowerCase"
+		} else if agn == "mac" {
+			check_func = "IsMAC"
+			check_desc = "MAC"
+		} else if agn == "mongoid" {
+			check_func = "IsMongoID"
+			check_desc = "MongoID"
+		} else if agn == "multibyte" {
+			check_func = "IsMultibyte"
+			check_desc = "multibyte"
+		} else if agn == "null" {
+			check_func = "IsNull"
+			check_desc = "null"
+		} else if agn == "numeric" {
+			check_func = "IsNumeric"
+			check_desc = "numeric"
+		} else if agn == "port" {
+			check_func = "IsPort"
+			check_desc = "port"
+		} else if agn == "printableascii" {
+			check_func = "IsPrintableASCII"
+			check_desc = "printable ASCII"
+		} else if agn == "rfc3339" {
+			check_func = "IsRFC3339"
+			check_desc = "RFC3339"
+		} else if agn == "rfc3339withoutzone" {
+			check_func = "IsRFC3339WithoutZone"
+			check_desc = "RFC3339 without zone"
+		} else if agn == "rgbcolor" {
+			check_func = "IsRGBcolor"
+			check_desc = "RGB color"
+		} else if agn == "requesturi" {
+			check_func = "IsRequestURI"
+			check_desc = "request URI"
+		} else if agn == "requesturl" {
+			check_func = "IsRequestURL"
+			check_desc = "request URL"
+		} else if agn == "ssn" {
+			check_func = "IsSSN"
+			check_desc = "SSN"
+		} else if agn == "semver" {
+			check_func = "IsSemver"
+			check_desc = "semver"
+		} else if agn == "url" {
+			check_func = "IsURL"
+			check_desc = "URL"
+		} else if agn == "utfdugit" {
+			check_func = "IsUTFDigit"
+			check_desc = "UTF digit"
+		} else if agn == "utfletter" {
+			check_func = "IsUTFLetter"
+			check_desc = "UTF letter"
+		} else if agn == "utfletternumeric" {
+			check_func = "IsUTFLetterNumeric"
+			check_desc = "UTF letter numeric"
+		} else if agn == "utfnumeric" {
+			check_func = "IsUTFNumeric"
+			check_desc = "UTF numeric"
+		} else if agn == "uuid" {
+			check_func = "IsUUID"
+			check_desc = "UUID"
+		} else if agn == "uuidv3" {
+			check_func = "IsUUIDv3"
+			check_desc = "UUIDv3"
+		} else if agn == "uuidv4" {
+			check_func = "IsUUIDv4"
+			check_desc = "UUIDv4"
+		} else if agn == "uuidv5" {
+			check_func = "IsUUIDv5"
+			check_desc = "UUIDv5"
+		} else if agn == "uppercase" {
+			check_func = "IsUpperCase"
+			check_desc = "upperCase"
+		} else if agn == "variablewidth" {
+			check_func = "IsVariableWidth"
+			check_desc = "variable width"
 		}
 
 		if check_func != "" {
 			supported = true
-			g.P("if ", govalidator_alias, ".", check_func, "(", varSrc, ") != ", agv.Source, " {")
+			g.P("if ", govalidator_alias, ".", check_func, "(", varSrc, ") != ", check_value, " {")
 			g.In()
 			error_msg := fmt.Sprintf(`%s.New("Value %s %s")`, errors_alias, check_str, check_desc)
-			vh.GenerateValidationErrorAdd(g.G(), error_msg, agn, fproto_gowrap_validator.VEID_INVALID_VALUE, "govalidator", agn, "govalidator_check", agv.Source)
+			vh.GenerateValidationErrorAdd(g.G(), error_msg, agn, fproto_gowrap_validator.VEID_INVALID_VALUE, "govalidator", agn, "govalidator_check", check_value)
 			g.Out()
 			g.P("}")
 		}

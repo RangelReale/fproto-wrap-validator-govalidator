@@ -52,7 +52,7 @@ func (t *Validator_Govalidator) GenerateValidation(g *fproto_gowrap.GeneratorFil
 		return tv.GenerateValidation(g, vh, tp, option, varSrc)
 	}
 
-	return fmt.Errorf("Unknown type for validator: %s", tp.FullOriginalName())
+	return fmt.Errorf("Unknown type for validator: %s", tp.TypeDescription())
 }
 
 func (t *Validator_Govalidator) generateValidation_scalar(g *fproto_gowrap.GeneratorFile, vh fproto_gowrap_validator.ValidatorHelper, tp *fdep.DepType, tinfo fproto_gowrap.TypeInfo, option *fproto.OptionElement, varSrc string) error {
@@ -64,7 +64,7 @@ func (t *Validator_Govalidator) generateValidation_scalar(g *fproto_gowrap.Gener
 		return t.generateValidation_scalar_string(g, vh, tp, tinfo, option, varSrc)
 	}
 
-	return fmt.Errorf("Validation not supported for type %s", tp.FullOriginalName())
+	return fmt.Errorf("Validation not supported for type %s", tp.TypeDescription())
 }
 
 func (t *Validator_Govalidator) generateValidation_scalar_string(g *fproto_gowrap.GeneratorFile, vh fproto_gowrap_validator.ValidatorHelper, tp *fdep.DepType, tinfo fproto_gowrap.TypeInfo, option *fproto.OptionElement, varSrc string) error {
@@ -258,7 +258,7 @@ func (t *Validator_Govalidator) generateValidation_scalar_string(g *fproto_gowra
 		}
 
 		if !supported {
-			return fmt.Errorf("Validation %s not supported for type %s", agn, tp.FullOriginalName())
+			return fmt.Errorf("Validation %s not supported for type %s", agn, tp.TypeDescription())
 		}
 	}
 

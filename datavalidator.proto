@@ -1,6 +1,6 @@
 syntax = "proto3";
-package govalidator;
-option go_package = "github.com/RangelReale/fproto-wrap-validator-govalidator/gowrap/gwproto";
+package datavalidator;
+option go_package = "github.com/RangelReale/fproto-wrap-validator-stddata/gowrap/gwproto";
 
 import "google/protobuf/descriptor.proto";
 

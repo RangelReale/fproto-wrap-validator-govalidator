@@ -1,4 +1,4 @@
-package fproto_gowrap_validator_govalidator
+package fproto_gowrap_validator_datavalidator
 
 import (
 	"fmt"
@@ -9,37 +9,37 @@ import (
 	"github.com/RangelReale/fproto-wrap/gowrap"
 )
 
-type ValidatorPlugin_Govalidator struct {
+type ValidatorPlugin_DataValidator struct {
 }
 
-func (tp *ValidatorPlugin_Govalidator) GetValidator(validatorType *fdep.OptionType) fproto_gowrap_validator.Validator {
-	// govalidator.field
+func (tp *ValidatorPlugin_DataValidator) GetValidator(validatorType *fdep.OptionType) fproto_gowrap_validator.Validator {
+	// datavalidator.field
 	if validatorType.Option != nil &&
-		validatorType.Option.DepFile.FilePath == "github.com/RangelReale/fproto-wrap-validator-govalidator/govalidator.proto" &&
-		validatorType.Option.DepFile.ProtoFile.PackageName == "govalidator" {
+		validatorType.Option.DepFile.FilePath == "github.com/RangelReale/fproto-wrap-validator-stddata/datavalidator.proto" &&
+		validatorType.Option.DepFile.ProtoFile.PackageName == "datavalidator" {
 		if validatorType.Name == "field" {
-			return &Validator_Govalidator{validatorType: validatorType}
+			return &Validator_DataValidator{validatorType: validatorType}
 		}
 	}
 	return nil
 }
 
-func (tp *ValidatorPlugin_Govalidator) ValidatorPrefixes() []string {
-	return []string{"govalidator"}
+func (tp *ValidatorPlugin_DataValidator) ValidatorPrefixes() []string {
+	return []string{"datavalidator"}
 }
 
 //
-// Validator_Govalidator
+// Validator_DataValidator
 //
-type Validator_Govalidator struct {
+type Validator_DataValidator struct {
 	validatorType *fdep.OptionType
 }
 
-func (tp *Validator_Govalidator) FPValidator() {
+func (tp *Validator_DataValidator) FPValidator() {
 
 }
 
-func (t *Validator_Govalidator) GenerateValidation(g *fproto_gowrap.GeneratorFile, vh fproto_gowrap_validator.ValidatorHelper, tp *fdep.DepType, option *fproto.OptionElement, varSrc string) error {
+func (t *Validator_DataValidator) GenerateValidation(g *fproto_gowrap.GeneratorFile, vh fproto_gowrap_validator.ValidatorHelper, tp *fdep.DepType, option *fproto.OptionElement, varSrc string) error {
 	tinfo := g.G().GetTypeInfo(tp)
 
 	if tinfo.Converter().TCID() == fproto_gowrap.TCID_SCALAR {
@@ -55,7 +55,7 @@ func (t *Validator_Govalidator) GenerateValidation(g *fproto_gowrap.GeneratorFil
 	return fmt.Errorf("Unknown type for validator: %s", tp.TypeDescription())
 }
 
-func (t *Validator_Govalidator) generateValidation_scalar(g *fproto_gowrap.GeneratorFile, vh fproto_gowrap_validator.ValidatorHelper, tp *fdep.DepType, tinfo fproto_gowrap.TypeInfo, option *fproto.OptionElement, varSrc string) error {
+func (t *Validator_DataValidator) generateValidation_scalar(g *fproto_gowrap.GeneratorFile, vh fproto_gowrap_validator.ValidatorHelper, tp *fdep.DepType, tinfo fproto_gowrap.TypeInfo, option *fproto.OptionElement, varSrc string) error {
 	switch *tp.ScalarType {
 	case fproto.StringScalar:
 		//
@@ -67,7 +67,7 @@ func (t *Validator_Govalidator) generateValidation_scalar(g *fproto_gowrap.Gener
 	return fmt.Errorf("Validation not supported for type %s", tp.TypeDescription())
 }
 
-func (t *Validator_Govalidator) generateValidation_scalar_string(g *fproto_gowrap.GeneratorFile, vh fproto_gowrap_validator.ValidatorHelper, tp *fdep.DepType, tinfo fproto_gowrap.TypeInfo, option *fproto.OptionElement, varSrc string) error {
+func (t *Validator_DataValidator) generateValidation_scalar_string(g *fproto_gowrap.GeneratorFile, vh fproto_gowrap_validator.ValidatorHelper, tp *fdep.DepType, tinfo fproto_gowrap.TypeInfo, option *fproto.OptionElement, varSrc string) error {
 	errors_alias := g.DeclDep("errors", "errors")
 	govalidator_alias := g.DeclDep("github.com/asaskevich/govalidator", "gv")
 
@@ -252,7 +252,7 @@ func (t *Validator_Govalidator) generateValidation_scalar_string(g *fproto_gowra
 			g.P("if ", govalidator_alias, ".", check_func, "(", varSrc, ") != ", check_value, " {")
 			g.In()
 			error_msg := fmt.Sprintf(`%s.New("Value %s %s")`, errors_alias, check_str, check_desc)
-			vh.GenerateValidationErrorAdd(g.G(), error_msg, agn, fproto_gowrap_validator.VEID_INVALID_VALUE, "govalidator", agn, "govalidator_check", check_value)
+			vh.GenerateValidationErrorAdd(g.G(), error_msg, agn, fproto_gowrap_validator.VEID_INVALID_VALUE, "datavalidator", agn, "datavalidator_check", check_value)
 			g.Out()
 			g.P("}")
 		}

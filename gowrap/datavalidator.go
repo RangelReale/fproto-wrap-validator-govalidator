@@ -1,4 +1,4 @@
-package fproto_gowrap_validator_datavalidator
+package fproto_gowrap_validator_stddata
 
 import (
 	"fmt"
